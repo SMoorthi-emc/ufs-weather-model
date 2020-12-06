@@ -45,14 +45,18 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 if [[ $MACHINE_ID == cheyenne.* ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
-    BUILD_JOBS=${BUILD_JOBS:-1}
+    BUILD_JOBS=${BUILD_JOBS:-8}
 fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}
 
 hostname
 
+. $MODULESHOME/init/sh
+module purge
+
 set +x
+set -x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/${MACHINE_ID}/fv3
 else
@@ -61,9 +65,13 @@ else
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
     [[ -f $PATHTR/modulefiles/${MACHINE_ID}/fv3_debug ]] && modulefile="fv3_debug"
   fi
+# cat $PATHTR/modulefiles/${MACHINE_ID}/$modulefile
   module load $modulefile
   module list
+  echo "UPP_INC= " $UPP_INC
+  echo "UPP_LIB= " $UPP_LIB
 fi
+#exit
 set -x
 
 echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
@@ -157,10 +165,15 @@ export BUILD_JOBS
 export CCPP_SUITES
 export CMAKE_FLAGS
 
+#exit
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+if [[ "${MAKE_OPT}" == "DEBUG=Y" ]] ; then
+ cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+else
+ cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+fi
 
 if [ $clean_after = YES ] ; then
   rm -rf ${BUILD_DIR}
