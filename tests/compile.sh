@@ -48,7 +48,7 @@ elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-8}
 fi
 
-BUILD_JOBS=${BUILD_JOBS:-8}
+BUILD_JOBS=${BUILD_JOBS:-4}
 
 hostname
 
