@@ -29,11 +29,11 @@
 [submodule "MOM6"]
   path = MOM6-interface/MOM6
   url = https://github.com/SMoorthi-emc/MOM6
-  branch = SM_Sep152020
+  branch = SM_Dec102020
 [submodule "CICE"]
   path = CICE-interface/CICE
   url = https://github.com/SMoorthi-emc/CICE
-  branch = SM_Sep172020
+  branch = SM_Dec102020
 [submodule "DATM"]
   path = DATM
   url = https://github.com/NOAA-EMC/NEMSdatm

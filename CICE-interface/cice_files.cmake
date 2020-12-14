@@ -24,6 +24,7 @@ list(APPEND cice_shared_files
   CICE/cicecore/cicedynB/analysis/ice_history_shared.F90
 
   #Dynamics List:
+  CICE/cicecore/cicedynB/dynamics/ice_dyn_vp.F90
   CICE/cicecore/cicedynB/dynamics/ice_dyn_eap.F90
   CICE/cicecore/cicedynB/dynamics/ice_dyn_evp.F90
   CICE/cicecore/cicedynB/dynamics/ice_dyn_evp_1d.F90
