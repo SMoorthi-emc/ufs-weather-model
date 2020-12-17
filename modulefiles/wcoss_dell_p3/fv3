@@ -17,32 +17,70 @@ setenv CMAKE_CXX_COMPILER mpiicpc
 setenv CMAKE_Fortran_COMPILER mpiifort
 setenv CMAKE_Platform wcoss_dell_p3
 
-module use /usrx/local/nceplibs/dev/hpc-stack/test/hpc-stack/modulefiles/stack
+ module use /usrx/local/nceplibs/dev/hpc-stack/test/hpc-stack/modulefiles/stack
 
-module load hpc/1.0.0-beta1
-module load hpc-ips/18.0.1.163
-module load hpc-impi/18.0.1
+ module load hpc/1.0.0-beta1
+ module load hpc-ips/18.0.1.163
+ module load hpc-impi/18.0.1
 
-module load jasper/2.0.22
-module load zlib/1.2.11
-module load png/1.6.35
+ module load jasper/2.0.22
+ module load zlib/1.2.11
+ module load png/1.6.35
 
-module load hdf5/1.10.6
-module load netcdf/4.7.4
-module load pio/2.5.1
-module load esmf/8_1_0_beta_snapshot_27
+ module load hdf5/1.10.6
+ module load netcdf/4.7.4
+ module load pio/2.5.1
+ module load esmf/8_1_0_beta_snapshot_27
 
-module load bacio/2.4.1
-module load crtm/2.3.0
-module load g2/3.4.1
-module load g2tmpl/1.9.1
-module load ip/3.3.3
-module load nemsio/2.5.2
-module load sp/2.3.3
-module load w3emc/2.7.3
-module load w3nco/2.4.1
-module load upp/10.0.0
+ module load bacio/2.4.1
+ module load crtm/2.3.0
+ module load g2/3.4.1
+ module load g2tmpl/1.9.1
+ module load ip/3.3.3
+ module load nemsio/2.5.2
+ module load sp/2.3.3
+ module load w3emc/2.7.3
+ module load w3nco/2.4.1
+#module load upp/10.0.0
+#
+##
+### NCEP libraries
+###
+#module use /usrx/local/nceplibs/dev/NCEPLIBS/cmake/install/NCEPLIBS/modules
+#module load bacio/2.4.0
+#module load crtm/2.3.0
+#module load g2/3.4.0
+#module load g2tmpl/1.9.0
+#module load ip/3.3.0
+#module load nceppost/dceca26
+#module load nemsio/2.5.1
+#module load sp/2.3.0
+#module load w3emc/2.7.0
+#module load w3nco/2.4.0
+#
+#module load gfsio/1.4.0
+#module load sfcio/1.4.0
+#module load sigio/2.3.0
+#
+#module load jasper/1.900.29
 
+#module use /usrx/local/dev/modulefiles/mpi_third/ips/18.0.1/impi/18.0.1
+#module load NetCDF-parallel/4.7.4
+#module load HDF5-parallel/1.10.6
+
+#module use /gpfs/dell2/emc/modeling/noscrub/emc.nemspara/soft/modulefiles
+#module load esmf/8.1.0bs27
+#
+###
+#module unload upp/10.0.0
+
+setenv upp_ROOT /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install
+setenv UPP_INC /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install/include
+setenv UPP_LIB /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install/lib
+
+#setenv upp_ROOT /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/postdir_mar24/EMC_post/upp/m10.0.1
+#setenv UPP_INC /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/postdir_mar24/EMC_post/upp/m10.0.1/include
+#setenv UPP_LIB /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/postdir_mar24/EMC_post/upp/m10.0.1/lib
 #setenv UPP_INC /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/postdir_mar24/EMC_post/sorc/ncep_post.fd/incmod/post_4
 #setenv UPP_LIB /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/postdir_mar24/EMC_post/sorc/ncep_post.fd/libnceppost.a
 
