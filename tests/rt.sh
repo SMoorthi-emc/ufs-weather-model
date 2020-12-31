@@ -31,7 +31,7 @@ usage() {
 rt_single() {
   local compile_line=''
   local run_line=''
-  while read -r line; do
+  while read -r line || [ "$line" ]; do
     line="${line#"${line%%[![:space:]]*}"}"
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
@@ -76,8 +76,8 @@ rt_trap() {
 }
 
 cleanup() {
-  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   rm -rf ${LOCKDIR}
+  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
 }
@@ -173,17 +173,45 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
   cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
 
+elif [[ $MACHINE_ID = wcoss2 ]]; then
+
+  source /apps/prod/lmodules/startLmod
+
+  #module use /usrx/local/dev/emc_rocoto/modulefiles
+  #module load ruby/2.5.1 rocoto/1.3.0rc2
+  #ROCOTORUN=$(which rocotorun)
+  #ROCOTOSTAT=$(which rocotostat)
+  #ROCOTOCOMPLETE=$(which rocotocomplete)
+  #ROCOTO_SCHEDULER=lsf
+
+  #module load ips/18.0.1.163
+  #module load ecflow/4.7.1
+  #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
+  #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+
+  DISKNM=/lfs/h1/emc/ptmp/Dusan.Jovic/RT
+  QUEUE=workq
+  COMPILE_QUEUE=workq
+  PARTITION=
+  ACCNR=GFS-DEV
+  STMP=/lfs/h1/emc/stmp
+  PTMP=/lfs/h1/emc/ptmp
+  SCHEDULER=pbs
+  cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
+  cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
+
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
-#  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
-  export PYTHONPATH=
-  ECFLOW_START=
-  # DH* 20190717 temporary
-  #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  module load cray-python/3.7.3.2
+
+  export PATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/bin:$PATH
+  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/lib/python3.7/site-packages
+  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
   DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
-  # *DH 20190717
-  QUEUE=debug
-  COMPILE_QUEUE=debug
+  QUEUE=normal
+  COMPILE_QUEUE=normal
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
 #  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
 #  ACCNR=cmp
@@ -193,6 +221,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_gaea fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_gaea fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = hera.* ]]; then
 
@@ -210,7 +239,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
 
-#  ACCNR=fv3-cpu
+  #ACCNR=fv3-cpu
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
@@ -316,7 +345,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
 
@@ -393,11 +422,14 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201118/${RT_COMPILER^^}}
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201223/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201118}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201223}
 fi
+
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201220/}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20201220/
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
@@ -408,40 +440,6 @@ if [[ $CREATE_BASELINE == true ]]; then
   #
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
-  echo "copy baseline inputs from: ${RTPWD}"
-  echo "                     to:   ${NEW_BASELINE}"
-
-  rsync -a "${RTPWD}"/FV3_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/WW3_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/DATM* "${NEW_BASELINE}"/
-
-  # FIXME: S2S baselines are only available on these machines with Intel
-  if [[ $MACHINE_ID = hera.intel ]] || [[ $MACHINE_ID = orion.intel ]] || [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-    rsync -a "${RTPWD}"/MOM6_* "${NEW_BASELINE}"/
-    rsync -a "${RTPWD}"/CICE_* "${NEW_BASELINE}"/
-    rsync -a "${RTPWD}"/CPL_* "${NEW_BASELINE}"/
-    rsync -a "${RTPWD}"/BM_* "${NEW_BASELINE}"/
-  fi
-
-  # FIXME: move these namelist files to parm directory
-  rsync -a "${RTPWD}"/fv3_regional_control/input.nml "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/input.nml   "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/input.nml    "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/input.nml "${NEW_BASELINE}"/fv3_regional_restart/
-
-  rsync -a "${RTPWD}"/fv3_regional_control/model_configure "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/model_configure   "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/model_configure    "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/model_configure "${NEW_BASELINE}"/fv3_regional_restart/
-
-  rsync -a "${RTPWD}"/fv3_regional_control/INPUT     "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_control/RESTART   "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/INPUT       "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/INPUT        "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/INPUT     "${NEW_BASELINE}"/fv3_regional_restart/
-  rsync -a "${RTPWD}"/fv3_stretched/INPUT            "${NEW_BASELINE}"/fv3_stretched/
-  rsync -a "${RTPWD}"/fv3_stretched_nest/INPUT       "${NEW_BASELINE}"/fv3_stretched_nest/
-  rsync -a "${RTPWD}"/fv3_stretched_nest_quilt/INPUT "${NEW_BASELINE}"/fv3_stretched_nest_quilt/
 fi
 
 COMPILE_LOG=${PATHRT}/Compile_$MACHINE_ID.log
@@ -481,6 +479,10 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev_transfer
     ROCOTO_SCHEDULER=lsf
+  elif [[ $MACHINE_ID = wcoss2 ]]; then
+    QUEUE=workq
+    COMPILE_QUEUE=workq
+    ROCOTO_SCHEDULER=pbs
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
@@ -501,12 +503,14 @@ if [[ $ROCOTO == true ]]; then
 <?xml version="1.0"?>
 <!DOCTYPE workflow
 [
-  <!ENTITY PATHRT       "${PATHRT}">
-  <!ENTITY LOG          "${LOG_DIR}">
-  <!ENTITY PATHTR       "${PATHTR}">
-  <!ENTITY RTPWD        "${RTPWD}">
-  <!ENTITY RUNDIR_ROOT  "${RUNDIR_ROOT}">
-  <!ENTITY NEW_BASELINE "${NEW_BASELINE}">
+  <!ENTITY PATHRT         "${PATHRT}">
+  <!ENTITY LOG            "${LOG_DIR}">
+  <!ENTITY PATHTR         "${PATHTR}">
+  <!ENTITY RTPWD          "${RTPWD}">
+  <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
+  <!ENTITY INPUTDATA_ROOT_WW3 "${INPUTDATA_ROOT_WW3}">
+  <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
+  <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
 <workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="20">
   <cycledef>197001010000 197001010000 01:00:00</cycledef>
@@ -541,12 +545,16 @@ EOF
     QUEUE=dev
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
+  elif [[ $MACHINE_ID = wcoss2 ]]; then
+    QUEUE=workq
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = orion.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = gaea.* ]]; then
+    QUEUE=normal
   elif [[ $MACHINE_ID = cheyenne.* ]]; then
     QUEUE=regular
   else
@@ -565,7 +573,7 @@ in_metatask=false
 
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
 
-while read -r line; do
+while read -r line || [ "$line" ]; do
 
   line="${line#"${line%%[![:space:]]*}"}"
   [[ ${#line} == 0 ]] && continue
@@ -573,53 +581,63 @@ while read -r line; do
 
   if [[ $line == COMPILE* ]] ; then
 
-      MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-      SET=$(     echo $line | cut -d'|' -f3)
-      MACHINES=$(echo $line | cut -d'|' -f4)
-      CB=$(      echo $line | cut -d'|' -f5)
+    MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+    SET=$(     echo $line | cut -d'|' -f3)
+    MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
+    CB=$(      echo $line | cut -d'|' -f5)
 
-      [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
-      [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
-      [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
+    [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
+    [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
-      (( COMPILE_NR += 1 ))
+    if [[ ${MACHINES} != '' ]]; then
+      if [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+      else
+        echo "MACHINES=|${MACHINES}|"
+        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
 
-      cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
-      export MACHINE_ID=${MACHINE_ID}
-      export RT_COMPILER=${RT_COMPILER}
-      export PATHRT=${PATHRT}
-      export PATHTR=${PATHTR}
-      export SCHEDULER=${SCHEDULER}
-      export ACCNR=${ACCNR}
-      export QUEUE=${COMPILE_QUEUE}
-      export PARTITION=${PARTITION}
-      export ROCOTO=${ROCOTO}
-      export ECFLOW=${ECFLOW}
-      export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
-      export LOG_DIR=${LOG_DIR}
+    (( COMPILE_NR += 1 ))
+
+    cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+    export MACHINE_ID=${MACHINE_ID}
+    export RT_COMPILER=${RT_COMPILER}
+    export PATHRT=${PATHRT}
+    export PATHTR=${PATHTR}
+    export SCHEDULER=${SCHEDULER}
+    export ACCNR=${ACCNR}
+    export QUEUE=${COMPILE_QUEUE}
+    export PARTITION=${PARTITION}
+    export ROCOTO=${ROCOTO}
+    export ECFLOW=${ECFLOW}
+    export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
+    export LOG_DIR=${LOG_DIR}
 EOF
 
-      if [[ $ROCOTO == true ]]; then
-        rocoto_create_compile_task
-      elif [[ $ECFLOW == true ]]; then
-        ecflow_create_compile_task
-      else
-        ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
-      fi
+    if [[ $ROCOTO == true ]]; then
+      rocoto_create_compile_task
+    elif [[ $ECFLOW == true ]]; then
+      ecflow_create_compile_task
+    else
+      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+    fi
 
-      # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs
-      if [[ ${MAKE_OPT^^} =~ "REPRO=Y" ]]; then
-        RT_SUFFIX="_repro"
-        BL_SUFFIX="_repro"
-      elif [[ ${MAKE_OPT^^} =~ "CCPP=Y" ]]; then
-        RT_SUFFIX="_prod"
-        BL_SUFFIX="_ccpp"
-      fi
+    # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
+    # (regression test baseline directories) for REPRO or PROD runs
+    if [[ ${MAKE_OPT^^} =~ "REPRO=Y" ]]; then
+      RT_SUFFIX="_repro"
+      BL_SUFFIX="_repro"
+    else
+      RT_SUFFIX="_prod"
+      BL_SUFFIX="_ccpp"
+    fi
 
-      if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then
-         COMPILE_PREV_WW3_NR=${COMPILE_NR}
-      fi
+    if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then
+       COMPILE_PREV_WW3_NR=${COMPILE_NR}
+    fi
 
     continue
 
@@ -627,15 +645,25 @@ EOF
 
     TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     SET=$(      echo $line | cut -d'|' -f3)
-    MACHINES=$( echo $line | cut -d'|' -f4)
+    MACHINES=$( echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(       echo $line | cut -d'|' -f5)
     DEP_RUN=$(  echo $line | cut -d'|' -f6 | sed -e 's/^ *//' -e 's/ *$//')
     DATE_35D=$( echo $line | cut -d'|' -f7 | sed -e 's/^ *//' -e 's/ *$//')
 
     [[ -e "tests/$TEST_NAME" ]] || die "run test file tests/$TEST_NAME does not exist"
     [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
-    [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
+
+    if [[ ${MACHINES} != '' ]]; then
+      if [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+      else
+        echo "MACHINES=|${MACHINES}|"
+        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
 
     # 35 day tests
     [[ $TEST_35D == true ]] && rt_35d
@@ -673,6 +701,8 @@ EOF
       export MACHINE_ID=${MACHINE_ID}
       export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
+      export INPUTDATA_ROOT=${INPUTDATA_ROOT}
+      export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}
       export NEW_BASELINE=${NEW_BASELINE}
