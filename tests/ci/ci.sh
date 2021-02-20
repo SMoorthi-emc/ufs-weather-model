@@ -63,6 +63,8 @@ fi
 
 if [ $BUILD = "true" ]; then
 
+  sed -i -e '/affinity.c/d' ../../CMakeLists.txt
+
   sudo docker build --build-arg test_name=$TEST_NAME \
                     --build-arg build_case=$BUILD_CASE \
                     --no-cache \
