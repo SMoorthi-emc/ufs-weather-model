@@ -33,9 +33,9 @@ target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SO
 target_link_libraries(mom6_obj PRIVATE fms
                                        NetCDF::NetCDF_Fortran)
 # OpenMP is disabled in MOM6
-#if(OpenMP_Fortran_FOUND)
-# target_link_libraries(mom6_obj PRIVATE OpenMP::OpenMP_Fortran)
-#endif()
+if(OpenMP_Fortran_FOUND)
+ target_link_libraries(mom6_obj PRIVATE OpenMP::OpenMP_Fortran)
+endif()
 
 add_library(mom6_nuopc_obj OBJECT ${mom6_nuopc_src_files})
 set_target_properties(mom6_nuopc_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
