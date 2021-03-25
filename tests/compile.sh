@@ -193,6 +193,6 @@ fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compiling ${MAKE_OPT} finished"
-COMPILE_NR=${COMPILE_NR:-""}
+COMPILE_NR=${COMPILE_NR:-$BUILD_NR}
 LOG_DIR=${LOG_DIR:-$(pwd)}
 echo "Compile $COMPILE_NR elapsed time $elapsed seconds. ${MAKE_OPT}" >> ${LOG_DIR}/compile_${COMPILE_NR}_time.log
