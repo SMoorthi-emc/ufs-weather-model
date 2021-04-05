@@ -1,11 +1,11 @@
 [submodule "FV3"]
   path = FV3
   url = https://github.com/SMoorthi-emc/fv3atm
-  branch = SM_Dec022020
+  branch = SM_Mar222021_GFDL_emc_dev
 [submodule "NEMS"]
   path = NEMS
   url = https://github.com/SMoorthi-emc/NEMS-1
-  branch = SM_Nov212020
+  branch = SM_Feb022021
 [submodule "FMS"]
   path = FMS
   url = https://github.com/NOAA-GFDL/FMS
@@ -13,7 +13,7 @@
 [submodule "WW3"]
   path = WW3
   url = https://github.com/SMoorthi-emc/WW3
-  branch = SM_Sep172020
+  branch = SM_Feb242021
 [submodule "stochastic_physics"]
   path = stochastic_physics
   url = https://github.com/noaa-psd/stochastic_physics
@@ -25,15 +25,15 @@
 [submodule "CMEPS"]
   path = CMEPS-interface/CMEPS
   url = https://github.com/SMoorthi-emc/CMEPS
-  branch = SM_Nov062020
+  branch = SM_Jan142021
 [submodule "MOM6"]
   path = MOM6-interface/MOM6
   url = https://github.com/SMoorthi-emc/MOM6
-  branch = SM_Dec102020
+  branch = SM_Mar122021
 [submodule "CICE"]
   path = CICE-interface/CICE
   url = https://github.com/SMoorthi-emc/CICE
-  branch = SM_Dec102020
+  branch = SM_Jan142021
 [submodule "DATM"]
   path = DATM
   url = https://github.com/NOAA-EMC/NEMSdatm
