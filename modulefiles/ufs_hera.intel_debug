@@ -10,10 +10,6 @@ module use /contrib/sutils/modulefiles
 module load sutils
 
 module load cmake/3.16.1
-setenv CMAKE_C_COMPILER mpiicc
-setenv CMAKE_CXX_COMPILER mpiicpc
-setenv CMAKE_Fortran_COMPILER mpiifort
-setenv CMAKE_Platform hera.intel
 
 module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack
 
@@ -27,3 +23,8 @@ module load ufs_common_debug
 setenv upp_ROOT /scratch1/NCEPDEV/global/Shrinivas.Moorthi/save/atm_post_dec16/EMC_post/install
 setenv UPP_INC /scratch1/NCEPDEV/global/Shrinivas.Moorthi/save/atm_post_dec16/EMC_post/install/include
 setenv UPP_LIB /scratch1/NCEPDEV/global/Shrinivas.Moorthi/save/atm_post_dec16/EMC_post/install/lib
+
+setenv CC mpiicc
+setenv CXX mpiicpc
+setenv FC mpiifort
+setenv CMAKE_Platform hera.intel
