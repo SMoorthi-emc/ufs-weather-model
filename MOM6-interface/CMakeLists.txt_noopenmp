@@ -33,9 +33,9 @@ target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SO
 target_link_libraries(mom6_obj PRIVATE fms
                                        NetCDF::NetCDF_Fortran)
 # OpenMP is disabled in MOM6
-if(OpenMP_Fortran_FOUND)
- target_link_libraries(mom6_obj PRIVATE OpenMP::OpenMP_Fortran)
-endif()
+#if(OpenMP_Fortran_FOUND)
+# target_link_libraries(mom6_obj PRIVATE OpenMP::OpenMP_Fortran)
+#endif()
 
 add_library(mom6_nuopc_obj OBJECT ${mom6_nuopc_src_files})
 set_target_properties(mom6_nuopc_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
@@ -46,9 +46,9 @@ target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
                                              fms
                                              esmf)
 # OpenMP is disabled in MOM6
- if(OpenMP_Fortran_FOUND)
-  target_link_libraries(mom6_nuopc_obj PRIVATE OpenMP::OpenMP_Fortran)
- endif()
+#if(OpenMP_Fortran_FOUND)
+# target_link_libraries(mom6_nuopc_obj PRIVATE OpenMP::OpenMP_Fortran)
+#endif()
 
 ### Create target library and set PUBLIC interfaces on the library
 add_library(mom6 STATIC $<TARGET_OBJECTS:mom6_obj>
@@ -61,9 +61,9 @@ target_link_libraries(mom6 PUBLIC fms
                                   esmf
                                   NetCDF::NetCDF_Fortran)
 # OpenMP is disabled in MOM6
- if(OpenMP_Fortran_FOUND)
-   target_link_libraries(mom6 PRIVATE OpenMP::OpenMP_Fortran)
- endif()
+#if(OpenMP_Fortran_FOUND)
+#  target_link_libraries(mom6 PRIVATE OpenMP::OpenMP_Fortran)
+#endif()
 
 ### Create standalone MOM6 executable
 if(MOM6SOLO)
@@ -79,9 +79,9 @@ if(MOM6SOLO)
                                          fms
                                          NetCDF::NetCDF_Fortran)
   # OpenMP is disabled in MOM6
-   if(OpenMP_Fortran_FOUND)
-     target_link_libraries(mom6solo PRIVATE OpenMP::OpenMP_Fortran)
-   endif()
+  #if(OpenMP_Fortran_FOUND)
+  #  target_link_libraries(mom6solo PRIVATE OpenMP::OpenMP_Fortran)
+  #endif()
 endif()
 
 ###############################################################################
