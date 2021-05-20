@@ -11,22 +11,14 @@ module load impi/18.0.1
 module load lsf/10.1
 module load python/3.6.3
 
-#module use /usrx/local/nceplibs/dev/hpc-stack/test/hpc-stack/modulefiles/stack
- module use /usrx/local/nceplibs/dev/hpc-stack/libs/hpc-stack/modulefiles/stack
-
-<<<<<<< HEAD
- module load hpc/1.1.0
- module load hpc-ips/18.0.1.163
- module load hpc-impi/18.0.1
-=======
-module load cmake/3.20.0
+module use /usrx/local/nceplibs/dev/hpc-stack/libs/hpc-stack/modulefiles/stack
 
 module load hpc/1.1.0
+module load cmake/3.20.0
 module load hpc-ips/18.0.1.163
 module load hpc-impi/18.0.1
->>>>>>> upstream/develop
 
- module load ufs_common
+module load ufs_common
 
 setenv upp_ROOT /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install
 setenv UPP_INC /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install/include
