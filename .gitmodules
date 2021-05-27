@@ -1,7 +1,7 @@
 [submodule "FV3"]
   path = FV3
   url = https://github.com/SMoorthi-emc/fv3atm
-  branch = SM_May012021
+  branch = SM_May182021
 [submodule "NEMS"]
   path = NEMS
   url = https://github.com/SMoorthi-emc/NEMS-1
@@ -21,7 +21,7 @@
 [submodule "CMEPS"]
   path = CMEPS-interface/CMEPS
   url = https://github.com/SMoorthi-emc/CMEPS
-  branch = SM_May022021
+  branch = SM_May272021
 [submodule "MOM6"]
   path = MOM6-interface/MOM6
   url = https://github.com/SMoorthi-emc/MOM6
@@ -37,4 +37,4 @@
 [submodule "CDEPS"]
   path = CDEPS-interface/CDEPS
   url = https://github.com/NOAA-EMC/CDEPS
-  branch = emc/develop
+  branch = develop
