@@ -9,7 +9,7 @@
 [submodule "WW3"]
   path = WW3
   url = https://github.com/SMoorthi-emc/WW3
-  branch = SM_Feb242021
+  branch = SM_May042021
 [submodule "stochastic_physics"]
   path = stochastic_physics
   url = https://github.com/noaa-psd/stochastic_physics
@@ -29,7 +29,7 @@
 [submodule "CICE"]
   path = CICE-interface/CICE
   url = https://github.com/SMoorthi-emc/CICE
-  branch = SM_Jan142021
+  branch = SM_Jun082021
 [submodule "DATM"]
   path = DATM
   url = https://github.com/NOAA-EMC/NEMSdatm
