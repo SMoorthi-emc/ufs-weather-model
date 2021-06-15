@@ -21,7 +21,7 @@
 [submodule "CMEPS"]
   path = CMEPS-interface/CMEPS
   url = https://github.com/SMoorthi-emc/CMEPS
-  branch = SM_May022021
+  branch = SM_May272021
 [submodule "MOM6"]
   path = MOM6-interface/MOM6
   url = https://github.com/SMoorthi-emc/MOM6
