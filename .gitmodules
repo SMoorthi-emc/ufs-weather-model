@@ -25,7 +25,7 @@
 [submodule "MOM6"]
   path = MOM6-interface/MOM6
   url = https://github.com/SMoorthi-emc/MOM6
-  branch = SM_Mar122021
+  branch = SM_May042021
 [submodule "CICE"]
   path = CICE-interface/CICE
   url = https://github.com/SMoorthi-emc/CICE
