@@ -20,6 +20,10 @@ module load hpc-impi/18.0.1
 
 module load ufs_common_debug
 
+setenv upp_ROOT /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install
+setenv UPP_INC /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install/include
+setenv UPP_LIB /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install/lib
+
 setenv CC mpiicc
 setenv CXX mpiicpc
 setenv FC mpiifort
