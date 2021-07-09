@@ -20,9 +20,9 @@ module load hpc-impi/18.0.1
 
 module load ufs_common
 
-setenv upp_ROOT /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install
-setenv UPP_INC /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install/include
-setenv UPP_LIB /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post/install/lib
+setenv upp_ROOT /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post_new/install
+setenv UPP_INC /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post_new/install/include
+setenv UPP_LIB /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/atm_post_dec16/EMC_post_new/install/lib
 
 #setenv upp_ROOT /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/postdir_mar24/EMC_post/upp/m10.0.1
 #setenv UPP_INC /gpfs/dell2/emc/modeling/noscrub/Shrinivas.Moorthi/postdir_mar24/EMC_post/upp/m10.0.1/include
