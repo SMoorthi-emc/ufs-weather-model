@@ -48,14 +48,13 @@ if [[ $MACHINE_ID == cheyenne.* ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-8}
+    . $MODULESHOME/init/sh
+    module purge
 fi
 
 BUILD_JOBS=${BUILD_JOBS:-4}
 
 hostname
-
-. $MODULESHOME/init/sh
-module purge
 
 set +x
 set -x
@@ -81,7 +80,6 @@ else
   echo "UPP_INC= " $UPP_INC
   echo "UPP_LIB= " $UPP_LIB
 fi
-#exit
 set -x
 
 echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
@@ -173,7 +171,6 @@ export BUILD_JOBS
 export CCPP_SUITES
 export CMAKE_FLAGS
 
-#exit
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
